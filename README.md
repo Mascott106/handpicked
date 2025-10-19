@@ -13,13 +13,35 @@ A Jellyfin plugin that allows administrators to create and display custom curate
 
 ## Installation
 
-1. Download the latest release from the [Releases](https://github.com/Mascott106/handpicked/releases) page
-2. Place the `.dll` file in your Jellyfin plugins directory:
+### Option 1: Build from Source (Recommended for now)
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Mascott106/handpicked.git
+   cd handpicked
+   ```
+
+2. Build the plugin:
+   ```bash
+   # Windows
+   .\build.ps1
+   
+   # Linux/macOS
+   ./build.sh
+   ```
+
+3. Copy the generated `.dll` file from `bin/Release/net6.0/publish/` to your Jellyfin plugins directory:
    - Windows: `%ProgramData%\Jellyfin\Server\plugins`
    - Linux: `/var/lib/jellyfin/plugins`
    - Docker: `/config/plugins`
-3. Restart Jellyfin
-4. The plugin will appear in your Jellyfin dashboard under "Plugins" as "Handpicked"
+
+4. Restart Jellyfin
+
+5. The plugin will appear in your Jellyfin dashboard under "Plugins" as "Handpicked"
+
+### Option 2: Download Release (Coming Soon)
+
+Releases will be available soon at the [Releases](https://github.com/Mascott106/handpicked/releases) page.
 
 ## Configuration
 

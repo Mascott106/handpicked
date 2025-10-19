@@ -1,6 +1,3 @@
-using Microsoft.Extensions.Logging;
-using Jellyfin.Data.Entities;
-using Jellyfin.Data.Enums;
 using HandpickedForJellyfin.Models;
 
 namespace HandpickedForJellyfin.Services;
@@ -10,26 +7,23 @@ namespace HandpickedForJellyfin.Services;
 /// </summary>
 public class CollectionDisplayService
 {
-    private readonly ILogger<CollectionDisplayService> _logger;
     private readonly HandpickedCollectionService _collectionService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CollectionDisplayService"/> class.
     /// </summary>
-    /// <param name="logger">The logger instance.</param>
     /// <param name="collectionService">The handpicked collection service.</param>
-    public CollectionDisplayService(ILogger<CollectionDisplayService> logger, HandpickedCollectionService collectionService)
+    public CollectionDisplayService(HandpickedCollectionService collectionService)
     {
-        _logger = logger;
         _collectionService = collectionService;
     }
 
     /// <summary>
     /// Gets the handpicked collection for display on the front page.
     /// </summary>
-    /// <param name="user">The user requesting the collection.</param>
+    /// <param name="userId">The user ID requesting the collection.</param>
     /// <returns>The handpicked collection data for display.</returns>
-    public HandpickedCollectionDisplayData? GetCollectionForDisplay(User user)
+    public HandpickedCollectionDisplayData? GetCollectionForDisplay(string userId)
     {
         try
         {
@@ -37,15 +31,15 @@ public class CollectionDisplayService
             
             if (!config.IsEnabled)
             {
-                _logger.LogDebug("Handpicked collection is disabled");
+                Console.WriteLine("Handpicked collection is disabled");
                 return null;
             }
 
-            var items = _collectionService.GetItemsForUser(user);
+            var items = _collectionService.GetItemsForUser(userId);
             
             if (!items.Any())
             {
-                _logger.LogDebug("No handpicked items available for user {UserId}", user.Id);
+                Console.WriteLine($"No handpicked items available for user {userId}");
                 return null;
             }
 
@@ -58,7 +52,7 @@ public class CollectionDisplayService
 
             if (!activeItems.Any())
             {
-                _logger.LogDebug("No active handpicked items available for user {UserId}", user.Id);
+                Console.WriteLine($"No active handpicked items available for user {userId}");
                 return null;
             }
 
@@ -73,7 +67,7 @@ public class CollectionDisplayService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting handpicked collection for display");
+            Console.WriteLine($"Error getting handpicked collection for display: {ex.Message}");
             return null;
         }
     }
@@ -81,15 +75,15 @@ public class CollectionDisplayService
     /// <summary>
     /// Gets all available collections for a user.
     /// </summary>
-    /// <param name="user">The user requesting the collections.</param>
+    /// <param name="userId">The user ID requesting the collections.</param>
     /// <returns>A list of collection display data.</returns>
-    public List<HandpickedCollectionDisplayData> GetAllCollectionsForUser(User user)
+    public List<HandpickedCollectionDisplayData> GetAllCollectionsForUser(string userId)
     {
         var collections = new List<HandpickedCollectionDisplayData>();
         
         try
         {
-            var collection = GetCollectionForDisplay(user);
+            var collection = GetCollectionForDisplay(userId);
             if (collection != null)
             {
                 collections.Add(collection);
@@ -97,7 +91,7 @@ public class CollectionDisplayService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error getting all collections for user {UserId}", user.Id);
+            Console.WriteLine($"Error getting all collections for user {userId}: {ex.Message}");
         }
 
         return collections;
@@ -106,20 +100,18 @@ public class CollectionDisplayService
     /// <summary>
     /// Checks if a user has access to handpicked collections.
     /// </summary>
-    /// <param name="user">The user to check.</param>
+    /// <param name="userId">The user ID to check.</param>
     /// <returns>True if the user has access to handpicked collections.</returns>
-    public bool UserHasAccess(User user)
+    public bool UserHasAccess(string userId)
     {
         try
         {
-            // Add your access control logic here
-            // For example, check if user is admin or has specific permissions
-            return user.HasPermission(PermissionKind.IsAdministrator) || 
-                   user.HasPermission(PermissionKind.EnableAllDevices);
+            // For now, all users have access - in a real implementation you would check permissions
+            return !string.IsNullOrEmpty(userId);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error checking user access for handpicked collections");
+            Console.WriteLine($"Error checking user access for handpicked collections: {ex.Message}");
             return false;
         }
     }
@@ -155,4 +147,3 @@ public class HandpickedCollectionDisplayData
     /// </summary>
     public int TotalItems { get; set; }
 }
-

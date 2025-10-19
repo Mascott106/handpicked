@@ -1,59 +1,54 @@
-using Jellyfin.Plugin;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using System;
+using System.IO;
 
 namespace HandpickedForJellyfin;
 
 /// <summary>
 /// Main plugin class for Handpicked Collections.
 /// </summary>
-public class HandpickedForJellyfinPlugin : IPlugin
+public class HandpickedForJellyfinPlugin
 {
-    private readonly ILogger<HandpickedForJellyfinPlugin> _logger;
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="HandpickedForJellyfinPlugin"/> class.
+    /// Gets the plugin name.
     /// </summary>
-    /// <param name="logger">The logger instance.</param>
-    public HandpickedForJellyfinPlugin(ILogger<HandpickedForJellyfinPlugin> logger)
-    {
-        _logger = logger;
-    }
-
-    /// <inheritdoc />
     public string Name => "Handpicked";
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets the plugin description.
+    /// </summary>
     public string Description => "Allows administrators to create and display custom curated collections on the front page.";
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets the plugin version.
+    /// </summary>
     public string Version => "1.0.0";
 
-    /// <inheritdoc />
-    public string Author => "Your Name";
+    /// <summary>
+    /// Gets the plugin author.
+    /// </summary>
+    public string Author => "Mascott106";
 
-    /// <inheritdoc />
-    public void OnLoad()
+    /// <summary>
+    /// Gets the plugin data path.
+    /// </summary>
+    public string DataPath { get; private set; } = string.Empty;
+
+    /// <summary>
+    /// Initializes the plugin.
+    /// </summary>
+    /// <param name="dataPath">The data path for the plugin.</param>
+    public void Initialize(string dataPath)
     {
-        _logger.LogInformation("Handpicked plugin loaded successfully");
+        DataPath = dataPath;
+        Console.WriteLine("Handpicked plugin initialized successfully");
     }
 
-    /// <inheritdoc />
-    public void OnUnload()
+    /// <summary>
+    /// Shuts down the plugin.
+    /// </summary>
+    public void Shutdown()
     {
-        _logger.LogInformation("Handpicked plugin unloaded");
-    }
-
-    /// <inheritdoc />
-    public void OnLoadConfiguration()
-    {
-        _logger.LogInformation("Handpicked plugin configuration loaded");
-    }
-
-    /// <inheritdoc />
-    public void OnSaveConfiguration()
-    {
-        _logger.LogInformation("Handpicked plugin configuration saved");
+        Console.WriteLine("Handpicked plugin shutdown");
     }
 }
 

@@ -1,7 +1,5 @@
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
-using Jellyfin.Data.Entities;
-using Jellyfin.Data.Enums;
+using HandpickedForJellyfin.Models;
 
 namespace HandpickedForJellyfin.Services;
 
@@ -10,7 +8,6 @@ namespace HandpickedForJellyfin.Services;
 /// </summary>
 public class HandpickedCollectionService
 {
-    private readonly ILogger<HandpickedCollectionService> _logger;
     private readonly string _dataPath;
     private readonly string _configFile;
     private HandpickedCollectionConfig _config;
@@ -18,11 +15,9 @@ public class HandpickedCollectionService
     /// <summary>
     /// Initializes a new instance of the <see cref="HandpickedCollectionService"/> class.
     /// </summary>
-    /// <param name="logger">The logger instance.</param>
     /// <param name="dataPath">The data path for storing configuration.</param>
-    public HandpickedCollectionService(ILogger<HandpickedCollectionService> logger, string dataPath)
+    public HandpickedCollectionService(string dataPath)
     {
-        _logger = logger;
         _dataPath = dataPath;
         _configFile = Path.Combine(_dataPath, "handpicked-collections.json");
         _config = LoadConfiguration();
@@ -45,7 +40,7 @@ public class HandpickedCollectionService
     {
         _config = config;
         SaveConfiguration();
-        _logger.LogInformation("Handpicked collection configuration updated");
+        Console.WriteLine("Handpicked collection configuration updated");
     }
 
     /// <summary>
@@ -56,13 +51,13 @@ public class HandpickedCollectionService
     {
         if (_config.Items.Any(i => i.ItemId == item.ItemId))
         {
-            _logger.LogWarning("Item {ItemId} is already in the handpicked collection", item.ItemId);
+            Console.WriteLine($"Item {item.ItemId} is already in the handpicked collection");
             return;
         }
 
         _config.Items.Add(item);
         SaveConfiguration();
-        _logger.LogInformation("Added item {ItemId} to handpicked collection", item.ItemId);
+        Console.WriteLine($"Added item {item.ItemId} to handpicked collection");
     }
 
     /// <summary>
@@ -76,7 +71,7 @@ public class HandpickedCollectionService
         {
             _config.Items.Remove(item);
             SaveConfiguration();
-            _logger.LogInformation("Removed item {ItemId} from handpicked collection", itemId);
+            Console.WriteLine($"Removed item {itemId} from handpicked collection");
         }
     }
 
@@ -92,7 +87,7 @@ public class HandpickedCollectionService
             var index = _config.Items.IndexOf(existingItem);
             _config.Items[index] = item;
             SaveConfiguration();
-            _logger.LogInformation("Updated item {ItemId} in handpicked collection", item.ItemId);
+            Console.WriteLine($"Updated item {item.ItemId} in handpicked collection");
         }
     }
 
@@ -108,23 +103,12 @@ public class HandpickedCollectionService
     /// <summary>
     /// Gets handpicked items for a specific user.
     /// </summary>
-    /// <param name="user">The user.</param>
+    /// <param name="userId">The user ID.</param>
     /// <returns>A list of handpicked items visible to the user.</returns>
-    public List<HandpickedItem> GetItemsForUser(User user)
+    public List<HandpickedItem> GetItemsForUser(string userId)
     {
-        return _config.Items.Where(item => IsItemVisibleToUser(item, user)).ToList();
-    }
-
-    /// <summary>
-    /// Checks if an item is visible to a specific user.
-    /// </summary>
-    /// <param name="item">The item to check.</param>
-    /// <param name="user">The user.</param>
-    /// <returns>True if the item is visible to the user.</returns>
-    private bool IsItemVisibleToUser(HandpickedItem item, User user)
-    {
-        // Add your visibility logic here based on user permissions, parental controls, etc.
-        return true;
+        // For now, return all items - in a real implementation you would filter based on user permissions
+        return _config.Items.Where(item => item.IsActive).ToList();
     }
 
     private HandpickedCollectionConfig LoadConfiguration()
@@ -140,7 +124,7 @@ public class HandpickedCollectionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error loading handpicked collection configuration");
+            Console.WriteLine($"Error loading handpicked collection configuration: {ex.Message}");
         }
 
         return new HandpickedCollectionConfig();
@@ -156,8 +140,7 @@ public class HandpickedCollectionService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error saving handpicked collection configuration");
+            Console.WriteLine($"Error saving handpicked collection configuration: {ex.Message}");
         }
     }
 }
-
