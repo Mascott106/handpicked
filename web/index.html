@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handpicked Configuration</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            color: #00a4dc;
+        }
+        
+        .header p {
+            margin: 5px 0 0 0;
+            color: #cccccc;
+        }
+        
+        .section {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .section h2 {
+            margin: 0 0 15px 0;
+            color: #ffffff;
+            font-size: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #cccccc;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #444;
+            border-radius: 4px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00a4dc;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .btn {
+            background-color: #00a4dc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background-color: #0088b8;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .items-list {
+            margin-top: 20px;
+        }
+        
+        .item-card {
+            background-color: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+        
+        .item-details {
+            font-size: 12px;
+            color: #cccccc;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-enabled {
+            background-color: #28a745;
+        }
+        
+        .status-disabled {
+            background-color: #dc3545;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #cccccc;
+        }
+        
+        .error {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .success {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Handpicked</h1>
+            <p>Configure your curated collection of favorite titles</p>
+        </div>
+
+        <div id="error-message" class="error hidden"></div>
+        <div id="success-message" class="success hidden"></div>
+
+        <div class="section">
+            <h2>Collection Settings</h2>
+            <form id="config-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Collection Title</label>
+                        <input type="text" id="title" name="title" placeholder="Handpicked">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxItems">Max Items to Display</label>
+                        <input type="number" id="maxItems" name="maxItems" min="1" max="100" value="20">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Collection Description</label>
+                    <textarea id="description" name="description" placeholder="Curated selection of our favorite titles"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="displayOrder">Display Order</label>
+                        <input type="number" id="displayOrder" name="displayOrder" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="isEnabled" name="isEnabled" checked>
+                            Enable Collection
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">Save Configuration</button>
+            </form>
+        </div>
+
+        <div class="section">
+            <h2>Handpicked Items</h2>
+            <div id="items-loading" class="loading">Loading items...</div>
+            <div id="items-list" class="items-list hidden">
+                <div id="items-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentConfig = null;
+        let currentItems = [];
+
+        // Load configuration on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfiguration();
+            loadItems();
+        });
+
+        // Configuration form submission
+        document.getElementById('config-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveConfiguration();
+        });
+
+        async function loadConfiguration() {
+            try {
+                const response = await fetch('/Handpicked/Configuration');
+                if (response.ok) {
+                    currentConfig = await response.json();
+                    populateConfigForm();
+                } else {
+                    showError('Failed to load configuration');
+                }
+            } catch (error) {
+                showError('Error loading configuration: ' + error.message);
+            }
+        }
+
+        async function saveConfiguration() {
+            const formData = new FormData(document.getElementById('config-form'));
+            const config = {
+                title: formData.get('title'),
+                description: formData.get('description'),
+                isEnabled: formData.get('isEnabled') === 'on',
+                maxItems: parseInt(formData.get('maxItems')),
+                displayOrder: parseInt(formData.get('displayOrder')),
+                items: currentConfig ? currentConfig.items : []
+            };
+
+            try {
+                const response = await fetch('/Handpicked/Configuration', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(config)
+                });
+
+                if (response.ok) {
+                    currentConfig = config;
+                    showSuccess('Configuration saved successfully');
+                } else {
+                    showError('Failed to save configuration');
+                }
+            } catch (error) {
+                showError('Error saving configuration: ' + error.message);
+            }
+        }
+
+        async function loadItems() {
+            try {
+                const response = await fetch('/Handpicked/Items');
+                if (response.ok) {
+                    currentItems = await response.json();
+                    displayItems();
+                } else {
+                    showError('Failed to load items');
+                }
+            } catch (error) {
+                showError('Error loading items: ' + error.message);
+            }
+        }
+
+        function populateConfigForm() {
+            if (currentConfig) {
+                document.getElementById('title').value = currentConfig.title || '';
+                document.getElementById('description').value = currentConfig.description || '';
+                document.getElementById('isEnabled').checked = currentConfig.isEnabled || false;
+                document.getElementById('maxItems').value = currentConfig.maxItems || 20;
+                document.getElementById('displayOrder').value = currentConfig.displayOrder || 0;
+            }
+        }
+
+        function displayItems() {
+            const container = document.getElementById('items-container');
+            const loading = document.getElementById('items-loading');
+            const list = document.getElementById('items-list');
+
+            loading.classList.add('hidden');
+            list.classList.remove('hidden');
+
+            if (currentItems.length === 0) {
+                container.innerHTML = '<p style="color: #cccccc; text-align: center; padding: 20px;">No items in collection yet</p>';
+                return;
+            }
+
+            container.innerHTML = currentItems.map(item => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-details">
+                            <span class="status-indicator ${item.isActive ? 'status-enabled' : 'status-disabled'}"></span>
+                            ${item.type} • Added ${new Date(item.addedDate).toLocaleDateString()}
+                            ${item.handpickedReason ? ' • ' + item.handpickedReason : ''}
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="editItem('${item.itemId}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="removeItem('${item.itemId}')">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function removeItem(itemId) {
+            if (confirm('Are you sure you want to remove this item from the collection?')) {
+                try {
+                    const response = await fetch(`/Handpicked/Items/${itemId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        currentItems = currentItems.filter(item => item.itemId !== itemId);
+                        displayItems();
+                        showSuccess('Item removed successfully');
+                    } else {
+                        showError('Failed to remove item');
+                    }
+                } catch (error) {
+                    showError('Error removing item: ' + error.message);
+                }
+            }
+        }
+
+        function editItem(itemId) {
+            // In a real implementation, you would open a modal or navigate to an edit page
+            alert('Edit functionality would be implemented here');
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = message;
+            successDiv.classList.remove('hidden');
+            setTimeout(() => successDiv.classList.add('hidden'), 3000);
+        }
+    </script>
+</body>
+</html>
+

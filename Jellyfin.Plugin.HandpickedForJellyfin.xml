@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Plugin>
+  <Id>HandpickedForJellyfin</Id>
+  <Name>Handpicked</Name>
+  <Description>Allows administrators to create and display custom curated collections on the front page.</Description>
+  <Version>1.0.0</Version>
+  <Author>Your Name</Author>
+  <Website>https://github.com/Mascott106/handpicked</Website>
+  <Category>Other</Category>
+  <TargetFramework>net6.0</TargetFramework>
+  <TargetFrameworkVersion>6.0</TargetFrameworkVersion>
+  <MinServerVersion>10.8.0</MinServerVersion>
+  <MaxServerVersion>99.99.99</MaxServerVersion>
+  <AssemblyName>HandpickedForJellyfin</AssemblyName>
+  <RootNamespace>HandpickedForJellyfin</RootNamespace>
+  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  <Dependencies>
+    <Dependency Id="Jellyfin.Plugin" Version="10.8.0" />
+  </Dependencies>
+  <ConfigurationPage>web/index.html</ConfigurationPage>
+  <ApiControllers>
+    <ApiController>HandpickedForJellyfin.Controllers.HandpickedController</ApiController>
+    <ApiController>HandpickedForJellyfin.Controllers.CollectionDisplayController</ApiController>
+  </ApiControllers>
+  <Services>
+    <Service>HandpickedForJellyfin.Services.HandpickedCollectionService</Service>
+    <Service>HandpickedForJellyfin.Services.CollectionDisplayService</Service>
+  </Services>
+</Plugin>
