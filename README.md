@@ -171,8 +171,8 @@ If you encounter any issues or have questions, please:
 
 ## Changelog
 
-### Version 1.0.0
-- Initial release
+### Version 0.1.0
+- Initial release (untested)
 - Basic collection management functionality
 - Admin configuration interface
 - API endpoints for programmatic access

@@ -3,7 +3,7 @@
   <Id>HandpickedForJellyfin</Id>
   <Name>Handpicked</Name>
   <Description>Allows administrators to create and display custom curated collections on the front page.</Description>
-  <Version>1.0.0</Version>
+  <Version>0.1.0</Version>
   <Author>Your Name</Author>
   <Website>https://github.com/Mascott106/handpicked</Website>
   <Category>Other</Category>

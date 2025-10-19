@@ -21,7 +21,7 @@ public class HandpickedForJellyfinPlugin
     /// <summary>
     /// Gets the plugin version.
     /// </summary>
-    public string Version => "1.0.0";
+    public string Version => "0.1.0";
 
     /// <summary>
     /// Gets the plugin author.
