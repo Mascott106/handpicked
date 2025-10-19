@@ -37,7 +37,11 @@ A Jellyfin plugin that allows administrators to create and display custom curate
 ### Adding Items to Your Collection
 
 1. In the plugin configuration page, you can add items by their Jellyfin item ID
-2. Each item can have:
+2. To find an item's ID:
+   - Go to the item in Jellyfin
+   - Look at the URL: `/web/index.html#!/itemdetails.html?id=ITEM_ID`
+   - Or use the Jellyfin API to search for items
+3. Each item can have:
    - Custom description
    - Handpicked reason (why it's special)
    - Display order within the collection
@@ -68,6 +72,13 @@ The plugin provides several REST API endpoints for programmatic access:
 - `PUT /Handpicked/Items/{itemId}` - Update existing item
 - `DELETE /Handpicked/Items/{itemId}` - Remove item from collection
 
+### Display API Endpoints
+
+- `GET /Handpicked/Display/Collection` - Get collection for current user
+- `GET /Handpicked/Display/Collection/{userId}` - Get collection for specific user
+- `GET /Handpicked/Display/Collections` - Get all collections for current user
+- `GET /Handpicked/Display/Access` - Check if current user has access
+
 ## Development
 
 ### Building from Source
@@ -93,18 +104,24 @@ The plugin provides several REST API endpoints for programmatic access:
 ### Project Structure
 
 ```
-HandpickedForJellyfin/
+handpicked/
 ├── Controllers/           # API controllers
-│   └── HandpickedController.cs
+│   ├── HandpickedController.cs
+│   └── CollectionDisplayController.cs
 ├── Models/               # Data models
 │   └── HandpickedCollectionConfig.cs
 ├── Services/             # Business logic
-│   └── HandpickedCollectionService.cs
+│   ├── HandpickedCollectionService.cs
+│   └── CollectionDisplayService.cs
 ├── web/                  # Frontend configuration page
 │   └── index.html
 ├── HandpickedForJellyfinPlugin.cs  # Main plugin class
 ├── HandpickedForJellyfin.csproj    # Project file
 ├── Jellyfin.Plugin.HandpickedForJellyfin.xml  # Plugin manifest
+├── ServiceRegistration.cs          # Dependency injection setup
+├── build.ps1                       # Windows build script
+├── build.sh                        # Linux/macOS build script
+├── .gitignore                      # Git ignore rules
 └── README.md
 ```
 
@@ -119,13 +136,13 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## Support
 
 If you encounter any issues or have questions, please:
 
-1. Check the [Issues](https://github.com/mascott/handpicked-for-jellyfin/issues) page
+1. Check the [Issues](https://github.com/Mascott106/handpicked/issues) page
 2. Create a new issue with detailed information about your problem
 3. Include your Jellyfin version and any relevant error messages
 
